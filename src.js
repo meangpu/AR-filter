@@ -14,9 +14,7 @@ let selected = -1; // Default no filter
 function preload() {
   imgSpidermanMask = loadImage("https://i.ibb.co/9HB2sSv/spiderman-mask-1.png");
 
-  digitalLabMask = loadImage(
-    "https://github.com/meangpu/AR-filter/blob/5d2d87774316631564fb87565e6f8d7a3ecb8c07/imgSrc/digitalContent.png"
-  );
+  digitalLabMask = loadImage("./imgSrc/digitalContent.png");
 
   // Dog Face Filter assets
   imgDogEarRight = loadImage("https://i.ibb.co/bFJf33z/dog-ear-right.png");
