@@ -5,6 +5,7 @@ let faceTracker; // Face Tracking
 let videoInput;
 
 let digitalLabMask;
+let contentLab;
 
 let imgSpidermanMask; // Spiderman Mask Filter
 let imgDogEarRight, imgDogEarLeft, imgDogNose; // Dog Face Filter
@@ -15,6 +16,7 @@ function preload() {
   imgSpidermanMask = loadImage("https://i.ibb.co/9HB2sSv/spiderman-mask-1.png");
 
   digitalLabMask = loadImage("./imgSrc/digitalContent.png");
+  contentLab = loadImage("./imgSrc/contentLab.png");
 
   // Dog Face Filter assets
   imgDogEarRight = loadImage("https://i.ibb.co/bFJf33z/dog-ear-right.png");
@@ -40,7 +42,12 @@ function setup() {
 
   // select filter
   const sel = createSelect();
-  const selectList = ["Spiderman Mask", "Dog Filter", "Digital lab Filter"]; // list of filters
+  const selectList = [
+    "Spiderman Mask",
+    "Dog Filter",
+    "Digital lab Filter",
+    "Content lab logo",
+  ]; // list of filters
   sel.option("Select Filter", -1); // Default no filter
   for (let i = 0; i < selectList.length; i++) {
     sel.option(selectList[i], i);
@@ -77,6 +84,9 @@ function draw() {
     case "2":
       drawDigitalLab();
       break;
+    case "3":
+      drawContentLab();
+      break;
   }
 }
 
@@ -109,7 +119,32 @@ function drawDigitalLab() {
   }
 }
 
-// Dog Face Filter
+function drawContentLab() {
+  const positions = faceTracker.getCurrentPosition();
+  if (positions !== false) {
+    if (positions.length >= 20) {
+      push();
+      translate(-100, -150); // offset adjustment
+      image(contentLab, positions[20][0], positions[20][1]);
+      pop();
+    }
+
+    if (positions.length >= 16) {
+      push();
+      translate(-20, -150); // offset adjustment
+      image(contentLab, positions[16][0], positions[16][1]);
+      pop();
+    }
+
+    if (positions.length >= 62) {
+      push();
+      translate(-57, -20); // offset adjustment
+      image(contentLab, positions[62][0], positions[62][1]);
+      pop();
+    }
+  }
+}
+
 function drawDogFace() {
   const positions = faceTracker.getCurrentPosition();
   if (positions !== false) {
