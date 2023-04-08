@@ -4,14 +4,19 @@ let outputHeight;
 let faceTracker; // Face Tracking
 let videoInput;
 
+let digitalLabMask;
+
 let imgSpidermanMask; // Spiderman Mask Filter
 let imgDogEarRight, imgDogEarLeft, imgDogNose; // Dog Face Filter
 
 let selected = -1; // Default no filter
 
 function preload() {
-  // Spiderman Mask Filter asset
   imgSpidermanMask = loadImage("https://i.ibb.co/9HB2sSv/spiderman-mask-1.png");
+
+  digitalLabMask = loadImage(
+    "https://github.com/meangpu/AR-filter/blob/5d2d87774316631564fb87565e6f8d7a3ecb8c07/imgSrc/digitalContent.png"
+  );
 
   // Dog Face Filter assets
   imgDogEarRight = loadImage("https://i.ibb.co/bFJf33z/dog-ear-right.png");
@@ -37,7 +42,7 @@ function setup() {
 
   // select filter
   const sel = createSelect();
-  const selectList = ["Spiderman Mask", "Dog Filter"]; // list of filters
+  const selectList = ["Spiderman Mask", "Dog Filter", "Digital lab Filter"]; // list of filters
   sel.option("Select Filter", -1); // Default no filter
   for (let i = 0; i < selectList.length; i++) {
     sel.option(selectList[i], i);
@@ -71,6 +76,9 @@ function draw() {
     case "1":
       drawDogFace();
       break;
+    case "2":
+      drawDigitalLab();
+      break;
   }
 }
 
@@ -85,6 +93,20 @@ function drawSpidermanMask() {
       1.2; // The height is given by the distance from nose to chin, times 2
     translate(-wx / 2, -wy / 2);
     image(imgSpidermanMask, positions[62][0], positions[62][1], wx, wy); // Show the mask at the center of the face
+    pop();
+  }
+}
+
+function drawDigitalLab() {
+  const positions = faceTracker.getCurrentPosition();
+  if (positions !== false) {
+    push();
+    const wx = Math.abs(positions[13][0] - positions[1][0]) * 1.2; // The width is given by the face width, based on the geometry
+    const wy =
+      Math.abs(positions[7][1] - Math.min(positions[16][1], positions[20][1])) *
+      1.2; // The height is given by the distance from nose to chin, times 2
+    translate(-wx / 2, -wy / 2);
+    image(digitalLabMask, positions[62][0], positions[62][1], wx, wy); // Show the mask at the center of the face
     pop();
   }
 }
