@@ -122,26 +122,14 @@ function drawDigitalLab() {
 function drawContentLab() {
   const positions = faceTracker.getCurrentPosition();
   if (positions !== false) {
-    if (positions.length >= 20) {
-      push();
-      translate(-100, -150); // offset adjustment
-      image(contentLab, positions[20][0], positions[20][1]);
-      pop();
-    }
-
-    if (positions.length >= 16) {
-      push();
-      translate(-20, -150); // offset adjustment
-      image(contentLab, positions[16][0], positions[16][1]);
-      pop();
-    }
-
-    if (positions.length >= 62) {
-      push();
-      translate(-57, -20); // offset adjustment
-      image(contentLab, positions[62][0], positions[62][1]);
-      pop();
-    }
+    push();
+    const wx = Math.abs(positions[13][0] - positions[1][0]) * 1.2; // The width is given by the face width, based on the geometry
+    const wy =
+      Math.abs(positions[7][1] - Math.min(positions[16][1], positions[20][1])) *
+      1.2;
+    translate(-400, -200);
+    image(contentLab, positions[62][0], positions[62][1], wx, wy); // Show the mask at the center of the face
+    pop();
   }
 }
 
